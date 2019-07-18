@@ -17,7 +17,7 @@ Add your DataDog key to deploy.js
 module.exports = function(deployTarget) {
   var ENV = {
     // truncated for brevity
-    emberCliDeployAssetSizes: {
+    dataDogAssetSizes: {
       DATADOG_API_KEY: <your-api-key>,
       DATADOG_APP_KEY: <your-app-key>,
       DATADOG_NAMESPACE: <some-namespace>

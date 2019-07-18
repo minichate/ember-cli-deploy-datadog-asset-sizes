@@ -1,6 +1,7 @@
 'use strict';
 
 var RSVP = require('rsvp');
+var path = require('path');
 
 var sendDeployData = function(assets, config, target) {
   var dogapi = require('dogapi');
@@ -23,12 +24,14 @@ var sendDeployData = function(assets, config, target) {
     let metrics = [];
     for (let i = 0; i < pushedAssets.length; i++) {
       let asset = pushedAssets[i];
+      let filename = path.basename(asset['name']);
+
       metrics.push({
         metric: namespace + '.build.size',
         points: [[now, asset['size']]],
         metric_type: 'count',
         tags: [
-          'filename:' + asset['name'],
+          'filename:' + filename,
           'environment:' + target
         ]
       });
@@ -38,7 +41,7 @@ var sendDeployData = function(assets, config, target) {
         points: [[now, asset['gzipSize']]],
         metric_type: 'count',
         tags: [
-          'filename:' + asset['name'],
+          'filename:' + filename,
           'environment:' + target
         ]
       });
@@ -62,7 +65,7 @@ module.exports = {
       name: options.name,
 
       didBuild: function(context) {
-        var emberCliDeployAssetSizesConfig = context.config.emberCliDeployDataDogAssetSizes;
+        var emberCliDeployAssetSizesConfig = context.config.dataDogAssetSizes;
         var target = context.deployTarget;
         var outputPath = context.project.root + '/' + context.distDir;
 
